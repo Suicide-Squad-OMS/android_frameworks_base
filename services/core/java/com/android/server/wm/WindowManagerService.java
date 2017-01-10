@@ -6093,10 +6093,6 @@ public class WindowManagerService extends IWindowManager.Stub
                 return;
             }
 
-            // Don't enable the screen until all existing windows have been drawn.
-            if (!mForceDisplayEnabled && checkWaitingForWindowsLocked()) {
-                return;
-            }
 
             if (!mBootAnimationStopped) {
                 // Do this one time.
@@ -6117,7 +6113,13 @@ public class WindowManagerService extends IWindowManager.Stub
                 mBootAnimationStopped = true;
             }
 
-            if (!mForceDisplayEnabled && !checkBootAnimationCompleteLocked()) {
+
+	   // Don't enable the screen until all existing windows have been drawn.
+            if (!mForceDisplayEnabled && checkWaitingForWindowsLocked()) {
+                return;
+            }
+
+	   if (!mForceDisplayEnabled && !checkBootAnimationCompleteLocked()) {
                 if (DEBUG_BOOT) Slog.i(TAG_WM, "performEnableScreen: Waiting for anim complete");
                 return;
             }
