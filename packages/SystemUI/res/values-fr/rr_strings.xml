@@ -280,4 +280,5 @@
   <string name="quick_settings_pie">Pie</string>
   <string name="accessibility_data_sim">Données de la carte SIM actuelle</string>
   <string name="data_switch_started">Changement de carte SIM en cours… Cela peut prendre jusqu\'à une minute...</string>
+  <string name="keyguard_plugged_in_dash_charging">Charge rapide</string>
 </resources>
