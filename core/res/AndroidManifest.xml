@@ -886,6 +886,14 @@
     <!-- ====================================================================== -->
     <eat-comment />
 
+    <!-- @hide Allows an application to change the package signature as
+       seen by applications -->
+
+   <permission android:name="android.permission.FAKE_PACKAGE_SIGNATURE"
+       android:protectionLevel="dangerous"
+       android:label="@string/permlab_fakePackageSignature"
+      android:description="@string/permdesc_fakePackageSignature" />
+
     <!-- Used for permissions that are associated with accessing
          microphone audio from the device. Note that phone calls also capture audio
          but are in a separate (more visible) permission group. -->

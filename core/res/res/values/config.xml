@@ -1458,6 +1458,8 @@
     <string-array name="config_locationProviderPackageNames" translatable="false">
         <!-- The standard AOSP fused location provider -->
         <item>com.android.location.fused</item>
+        <!-- The (faked) microg fused location provider -->
+        <item>com.google.android.gms</item>
     </string-array>
 
     <!-- This string array can be overriden to enable test location providers initially. -->
@@ -2754,7 +2756,7 @@
 
     <!-- Configuartion to support SIM contact batch operation.-->
     <bool name="config_sim_phonebook_batch_operation">true</bool>
-    
+
     <!-- Zero Balance redirect URL config -->
     <string name="operator_config_url" translatable="false"></string>
     <!-- Zero Balance ping URL config -->
