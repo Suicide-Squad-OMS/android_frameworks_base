@@ -215,7 +215,13 @@ public class ViewConfiguration {
     /**
      * The coefficient of friction applied to flings/scrolls.
      */
-    private static final float SCROLL_FRICTION = 0.012f;
+    private static float SCROLL_FRICTION = 0.007f;
+    
+    /**
+     * The coefficient of friction applied to flings/scrolls.
+     * @hide
+     */
+    public static final float DEFAULT_SCROLL_FRICTION = 0.007f;    
 
     /**
      * Max distance in dips to overscroll for edge effects
