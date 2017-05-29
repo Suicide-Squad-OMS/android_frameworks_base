@@ -1012,6 +1012,9 @@ public final class PowerManagerService extends SystemService
 
     private void acquireWakeLockInternal(IBinder lock, int flags, String tag, String packageName,
             WorkSource ws, String historyTag, int uid, int pid) {
+         // @ WAKEBLOCK
+        com.giovannibozzano.wakeblock.WakeBlockService.getInstance().bindService(mContext);
+        // # WAKEBLOCK
         synchronized (mLock) {
             if (DEBUG_SPEW) {
                 Slog.d(TAG, "acquireWakeLockInternal: lock=" + Objects.hashCode(lock)
@@ -1043,9 +1046,17 @@ public final class PowerManagerService extends SystemService
                     notifyWakeLockChangingLocked(wakeLock, flags, tag, packageName,
                             uid, pid, ws, historyTag);
                     wakeLock.updateProperties(flags, tag, packageName, ws, historyTag, uid, pid);
+                     // @ WAKEBLOCK
+                    com.giovannibozzano.wakeblock.WakeBlockService.getInstance().wakeLockUpdateProperties(lock, wakeLock.mTag, tag);
+                    // # WAKEBLOCK
                 }
                 notifyAcquire = false;
             } else {
+                // @ WAKEBLOCK
+                if (!com.giovannibozzano.wakeblock.WakeBlockService.getInstance().wakeLockAcquireNew(lock, tag, packageName)) {
+                    return;
+                }
+                // # WAKEBLOCK
                 wakeLock = new WakeLock(lock, flags, tag, packageName, ws, historyTag, uid, pid);
                 try {
                     lock.linkToDeath(wakeLock, 0);
@@ -1140,6 +1151,10 @@ public final class PowerManagerService extends SystemService
                 return;
             }
 
+              // @ WAKEBLOCK
+            com.giovannibozzano.wakeblock.WakeBlockService.getInstance().wakeLockHandleDeath(wakeLock.mLock, wakeLock.mTag);
+            // # WAKEBLOCK
+
             removeWakeLockLocked(wakeLock, index);
         }
     }
@@ -1177,6 +1192,9 @@ public final class PowerManagerService extends SystemService
             }
 
             WakeLock wakeLock = mWakeLocks.get(index);
+             // @ WAKEBLOCK
+            com.giovannibozzano.wakeblock.WakeBlockService.getInstance().wakeLockRelease(lock, wakeLock.mTag);
+            // # WAKEBLOCK
             if (DEBUG_SPEW) {
                 Slog.d(TAG, "updateWakeLockWorkSourceInternal: lock=" + Objects.hashCode(lock)
                         + " [" + wakeLock.mTag + "], ws=" + ws);
