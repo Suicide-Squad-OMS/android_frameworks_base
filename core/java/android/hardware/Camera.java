@@ -164,6 +164,7 @@ public class Camera {
     private static final int CAMERA_MSG_STATS_DATA       = 0x1000;
     private static final int CAMERA_MSG_META_DATA        = 0x2000;
     /* ### QC ADD-ONS: END */
+    private static final int CAMERA_MSG_AEC              = 0x4000;
 
     private static boolean mHal1ListLoadedFromFs = false;
     private static String mHal1FsPackageList = "";
@@ -213,6 +214,7 @@ public class Camera {
     private CameraDataCallback mCameraDataCallback;
     private CameraMetaDataCallback mCameraMetaDataCallback;
     /* ### QC ADD-ONS: END */
+    private AECallback mAECallback;
 
     /**
      * @deprecated This broadcast is no longer delivered by the system; use
@@ -1279,6 +1281,13 @@ public class Camera {
                 }
                 return;
             /* ### QC ADD-ONS: END */
+
+            case CAMERA_MSG_AEC:
+                if (mAECallback != null) {
+                    mAECallback.onAEChanged(new int[] { msg.arg1, msg.arg2 }, mCamera);
+                }
+                return;
+
             default:
                 Log.e(TAG, "Unknown message type " + msg.what);
                 return;
@@ -2171,6 +2180,16 @@ public class Camera {
         native_sendMetaData();
     }
     private native final void native_sendMetaData();
+
+    public interface AECallback
+    {
+        void onAEChanged(int[] states, Camera camera);
+    }
+
+    public void setAECallback(AECallback cb)
+    {
+        mAECallback = cb;
+    }
 
     /** @hide
      * Configure longshot mode. Available only in ZSL.
