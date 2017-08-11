@@ -363,6 +363,7 @@ public class RecentsView extends FrameLayout {
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().send(new ToggleRecentsEvent());
+                updateMemoryStatus();
             }
         });
         if (mFloatingButton != null) {
@@ -960,6 +961,29 @@ public class RecentsView extends FrameLayout {
                     .setInterpolator(Interpolators.ALPHA_OUT)
                     .start();
         }
+
+        // Temporarily hide the memory bar without changing visibility
+        if (mMemBar != null && showMemDisplay()) {
+            mMemBar.animate()
+                    .alpha(0f)
+                    .setDuration(HIDE_STACK_ACTION_BUTTON_DURATION)
+                    .setInterpolator(Interpolators.ALPHA_OUT)
+                    .start();
+        }
+
+        // Temporarily hide the memory text without changing visibility
+        if (mMemText != null && showMemDisplay()) {
+            mMemText.animate()
+                    .alpha(0f)
+                    .setDuration(HIDE_STACK_ACTION_BUTTON_DURATION)
+                    .setInterpolator(Interpolators.ALPHA_OUT)
+                    .start();
+        }
+
+        // Temporarily hide the floating action button without changing visibility
+        if (mFloatingButton != null && showClearAllRecents) {
+            endFABanimation();
+        }
     }
 
     public final void onBusEvent(DragDropTargetChangedEvent event) {
@@ -1047,6 +1071,29 @@ public class RecentsView extends FrameLayout {
                     .setDuration(SHOW_STACK_ACTION_BUTTON_DURATION)
                     .setInterpolator(Interpolators.ALPHA_IN)
                     .start();
+        }
+
+        // Show the memory bar without changing visibility
+        if (mMemBar != null && showMemDisplay()) {
+            mMemBar.animate()
+                    .alpha(1f)
+                    .setDuration(SHOW_STACK_ACTION_BUTTON_DURATION)
+                    .setInterpolator(Interpolators.ALPHA_IN)
+                    .start();
+        }
+
+        // Show the memory text without changing visibility
+        if (mMemText != null && showMemDisplay()) {
+            mMemText.animate()
+                    .alpha(1f)
+                    .setDuration(SHOW_STACK_ACTION_BUTTON_DURATION)
+                    .setInterpolator(Interpolators.ALPHA_IN)
+                    .start();
+        }
+
+        // Show the floating action button without changing visibility
+        if (mFloatingButton != null && showClearAllRecents) {
+            startFABanimation();
         }
     }
 
@@ -1338,8 +1385,6 @@ public class RecentsView extends FrameLayout {
                      Settings.System.SHOW_CLEAR_ALL_RECENTS), false, this, UserHandle.USER_ALL);
              resolver.registerContentObserver(Settings.System.getUriFor(
                      Settings.System.NAVIGATION_BAR_RECENTS), false, this, UserHandle.USER_ALL);
-             resolver.registerContentObserver(Settings.System.getUriFor(
-                     Settings.System.RECENTS_LOCK_ICON), false, this, UserHandle.USER_ALL);
 
              update();
          }

@@ -192,6 +192,12 @@
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
 
+    <protected-broadcast android:name="action_handler_show_power_menu" />
+    <protected-broadcast android:name="action_handler_toggle_screenrecord" />
+    <protected-broadcast android:name="action_handler_screenshot" />
+    <protected-broadcast android:name="action_handler_region_screenshot" />
+    <protected-broadcast android:name="action_handler_toggle_flashlight" />
+
     <!-- Locale QS -->
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
 
@@ -698,6 +704,15 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</activity>
+                 <activity
+                        android:name=".pbs_skull"
+                        android:label="PitchBlack 3 - smart" >
+                        <intent-filter>
+                                <action android:name="org.omnirom.DaylightHeaderPack1" />
+
+                                <category android:name="android.intent.category.DEFAULT" />
+                        </intent-filter>
+                </activity>
 		 <activity
 			android:name=".getr_base"
 			android:label="Get resurrected - smart" >
