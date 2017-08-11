@@ -3565,6 +3565,12 @@ public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_rege
         public static final Validator NOTIFICATION_LIGHT_PULSE_VALIDATOR = sBooleanValidator;
 
         /**
+         * Whether to show battery light when DND mode is active
+         * @hide
+         */
+        public static final String BATTERY_LIGHT_ALLOW_ON_DND = "battery_light_allow_on_dnd";
+
+        /**
          * Show pointer location on screen?
          * 0 = no
          * 1 = yes
@@ -3927,6 +3933,13 @@ public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_rege
          * @hide
          */
         public static final String SCREENSHOT_DELAY = "screenshot_delay";
+
+        /**
+         * Indicates whether ANBI (Accidental navigation button interaction) is enabled.
+         *
+         * @hide
+         */
+        public static final String ANBI_ENABLED = "anbi_enabled";
 
         /**
          * Quick Settings number of columns
@@ -4512,6 +4525,11 @@ public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_rege
          */
         public static final String NO_SIM_CLUSTER_SWITCH = "no_sim_cluster_switch";
 
+        /**
+         * Disable No sim icon if sim isnt available
+         * @hide
+         */
+        public static final String DISABLE_NO_SIM = "disable_no_sim";
 
         /**
          * @hide
@@ -4653,6 +4671,13 @@ public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_rege
         public static final String STATUS_BAR_QUICK_QS_PULLDOWN = "status_bar_quick_qs_pulldown";
 
         /**
+         *
+         * @hide
+         */
+
+        public static final String QUICK_TILE_ADD = "quick_tile_add";
+
+        /**
          * Enable/Disable screenshot sound
          * @hide
          */
@@ -4732,6 +4757,12 @@ public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_rege
          * @hide
          */
         public static final String NAV_BAR_DYNAMIC = "nav_bar_dynamic";
+
+        /*
+         * Whether to light hw keys when screen pressed
+         * @hide
+         */
+        public static final String BUTTON_LIGHT_SCREEN = "button_light_screen";
 
         /*
          * Whether to show the weather info on the lock screen
@@ -5252,6 +5283,18 @@ public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_rege
          */
         public static final String CUSTOM_CARRIER_LABEL = "custom_carrier_label";
 
+	/*
+         * change lockscreen alpha color
+         * @hide
+         */
+        public static final String LOCKSCREEN_ALPHA = "lockscreen_alpha";
+
+        /**
+         * change lockscreen security alpha color
+         * @hide
+         */
+        public static final String LOCKSCREEN_SECURITY_ALPHA = "lockscreen_security_alpha";
+
         /**
          * Carrier Label Custom Color
          * @hide
@@ -5501,6 +5544,7 @@ public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_rege
          */
         public static final String PA_PIE_ALWAYS_RIGHT = "pa_pie_always_right";
 
+
         /**
          * Use EdgeGesture Service for system gestures in PhoneWindowManager
          * @hide
@@ -5621,6 +5665,12 @@ public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_rege
          * @hide
          */
         public static final String LOCK_SCREEN_WEATHER_WIND_COLOR = "lock_screen_weather_wind_color";
+
+        /**
+         * Smartbar touch sounds
+         * @hide
+         */
+        public static final String NAV_BUTTON_SOUNDS = "nav_button_sounds";
 
         /**
          * Color of Lockscreen Shortcuts Icons
@@ -6036,6 +6086,36 @@ public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_rege
         public static final String NO_NAVIGATION_NOTIFICATION = "no_navigation_notification";
 
         /**
+         * Wheter to use corner radius for Slim Recents cards
+         * @hide
+         */
+        public static final String SLIM_RECENTS_CORNER_RADIUS = "slim_recents_corner_radius";
+
+        /**
+         * Whether to answer or silence an incoming call with a swipe action on fingerprint scanner
+         * 0 = don't do anything (default)
+         * 1 = answer call with both swipe up and swipe down actions
+         * 2 = swipe up to answer, swipe down to silence the call
+         * @hide
+         */
+        public static final String FP_SWIPE_CALL_ACTIONS = "fp_swipe_call_actions";
+
+        /**
+         * Whether allowing pocket service to register sensors and dispatch informations.
+         *   0 = disabled
+         *   1 = enabled
+         * @author Carlo Savignano
+         * @hide
+         */
+        public static final String POCKET_JUDGE = "pocket_judge";
+
+        /**
+         * Sensor block per-package
+         * @hide
+         */
+        public static final String SENSOR_BLOCK = "sensor_block";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -6189,6 +6269,8 @@ public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_rege
             PRIVATE_SETTINGS.add(POINTER_SPEED);
             PRIVATE_SETTINGS.add(LOCK_TO_APP_ENABLED);
             PRIVATE_SETTINGS.add(EGG_MODE);
+            // Pocket mode handler.
+            PRIVATE_SETTINGS.add(POCKET_JUDGE);
         }
 
         /**
@@ -7606,6 +7688,21 @@ public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_rege
          * @hide
          */
         public static final String PULSE_CUSTOM_BUTTONS_OPACITY = "pulse_custom_buttons_opacity";
+
+        /**
+         * Long press delay for smartbar buttons
+         * @hide
+         * 0: Default (fast)
+         * 1: Normal delay
+         * 2: Long delay
+         */
+        public static final String SMARTBAR_LONGPRESS_DELAY = "smartbar_longpress_delay";
+
+        /**
+         * Scaling value for smartbar custom button icon
+         * @hide
+         */
+        public static final String SMARTBAR_CUSTOM_ICON_SIZE = "smartbar_custom_icon_size";
 
         /**
          * A flag containing settings used for biometric weak
@@ -9121,6 +9218,13 @@ public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_rege
          */
         public static final String FORCE_CHARGE_BATTERY_TEXT = "force_charge_battery_text";
 
+         /**
+         * Whether to pulse the battery icon when charging
+         *
+         * @hide
+         */
+       public static final String STATUS_BAR_PULSE_CHARGING_BATTERY = "status_bar_pulse_charging_battery";
+
         /**
          * Charging symbol near battery text percentage
          * 0: no symbol
@@ -9264,6 +9368,77 @@ public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_rege
 
         public static final String QS_DATA_ADVANCED = "qs_data_advanced";
 
+        /**
+         * Whether to show PIE controls on the screen.
+         * 0 = OFF
+         * 1 = ON
+         * Changes aspect depends on status bar visibility.
+         * @hide
+         */
+        public static final String PIE_STATE = "pie_state";
+
+        /**
+         * PIE controls current location.
+         * Gravity.BOTTOM (default)
+         * Gravity.LEFT
+         * Gravity.RIGHT
+         * @hide
+         */
+        public static final String PIE_GRAVITY = "pie_gravity";
+
+        /**
+         * Whether to show battery circle in PIE controls.
+         * 0 = Text only
+         * 1 = Circle only
+         * 2 = Text and circle
+         * @hide
+         */
+        public static final String PIE_BATTERY_MODE = "pie_battery_mode";
+
+        /**
+         * PIE controls theme mode.
+         * 0 = AUTO
+         * 1 = WHITE
+         * 2 = DARK
+         * @hide
+         */
+        public static final String PIE_THEME_MODE = "pie_theme_mode";
+
+        /**
+         * PIE controls status indicator mode.
+         * 0 = BOTH
+         * 1 = WIFI ONLY
+         * 2 = MOBILE NETWORK ONLY
+         * 3 = NONE
+         * @hide
+         */
+        public static final String PIE_STATUS_INDICATOR = "pie_status_indicator";
+
+        /**
+         * Used to store the last used system ui flags to make qs settings stick after reboot
+         * @hide
+         */
+        public static final String LAST_SYSTEM_DESIGN_FLAGS = "last_system_design_flags";
+
+        /**
+         * Setting to record how the look and feel of the system should be tweaked. This
+         * should be used in combination with magic.
+         *
+         * @see android.view.View#SYSTEM_DESIGN_FLAG_IMMERSIVE_NAV
+         * @see android.view.View#SYSTEM_DESIGN_FLAG_IMMERSIVE_STATUS
+         * @hide
+         */
+        public static final String SYSTEM_DESIGN_FLAGS = "system_design_flags";
+
+        /**
+         * Settings to reset on user request. They will fall back to their default value (0).
+         *
+         * @hide
+         */
+        public static final String[] SETTINGS_TO_RESET = {
+            PIE_STATE,
+            PIE_GRAVITY
+        };
 
         /**
          * Whether or not the automatic storage manager is enabled and should run on the device.

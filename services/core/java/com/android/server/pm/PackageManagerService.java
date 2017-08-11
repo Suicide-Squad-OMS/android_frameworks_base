@@ -4582,7 +4582,6 @@ public class PackageManagerService extends IPackageManager.Stub {
                         || actionName.startsWith("com.android.server.sip.SipWakeupTimer")
                         || actionName.startsWith("com.android.internal.telephony.data-reconnect")
                         || actionName.startsWith("android.net.netmon.launchCaptivePortalApp")
-                        || actionName.startsWith("intent_navbar_edit")
                         || actionName.startsWith("org.omnirom.omniswitch")) {
                     return true;
                 }
@@ -19805,9 +19804,12 @@ Slog.v(TAG, ":: stepped forward, applying functor at tag " + parser.getName());
         } catch (Exception e) {
             logCriticalInfo(Log.WARN, "Destroying user " + userId + " on volume " + volumeUuid
                     + " because we failed to prepare: " + e);
-            destroyUserDataLI(volumeUuid, userId,
+            if ((flags & StorageManager.FLAG_STORAGE_DE) != 0) {
+                destroyUserDataLI(volumeUuid, userId,
                     StorageManager.FLAG_STORAGE_DE | StorageManager.FLAG_STORAGE_CE);
-
+            } else {
+                destroyUserDataLI(volumeUuid, userId, flags);
+            }
             if (allowRecover) {
                 // Try one last time; if we fail again we're really in trouble
                 prepareUserDataLI(volumeUuid, userId, userSerial, flags, false);

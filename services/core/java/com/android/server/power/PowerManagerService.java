@@ -55,6 +55,7 @@ import android.os.SystemProperties;
 import android.os.Trace;
 import android.os.UserHandle;
 import android.os.WorkSource;
+import android.pocket.PocketManager;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
@@ -230,6 +231,11 @@ public final class PowerManagerService extends SystemService
     private int mKeyboardBrightness;
     private int mKeyboardBrightnessSettingDefault;
 
+    private boolean mButtonPressed = false;
+    private boolean mButtonLightOnKeypressOnly;
+    private boolean mButtonLightOnKeypressOnlyDefault;
+    private int mDefaultVal;
+
     private final Object mLock = new Object();
 
     // A bitfield that indicates what parts of the power state have
@@ -279,6 +285,7 @@ public final class PowerManagerService extends SystemService
     private long mLastSleepTime;
 
     // Timestamp of the last call to user activity.
+    private long mLastButtonActivityTime;
     private long mLastUserActivityTime;
     private long mLastUserActivityTimeNoChangeLights;
 
@@ -762,6 +769,10 @@ public final class PowerManagerService extends SystemService
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.WAKELOCK_BLOCKING_LIST),
                     false, mSettingsObserver, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.BUTTON_LIGHT_SCREEN),
+                    false, mSettingsObserver, UserHandle.USER_ALL);
+
 
             // Go.
             readConfigurationLocked();
@@ -839,6 +850,8 @@ public final class PowerManagerService extends SystemService
             mProximityWakeLock = ((PowerManager) mContext.getSystemService(Context.POWER_SERVICE))
                     .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ProximityWakeLock");
         }
+        mButtonLightOnKeypressOnlyDefault = resources.getBoolean(
+                com.android.internal.R.bool.config_buttonLightOnKeypressOnly);
     }
 
     private void updateSettingsLocked() {
@@ -870,6 +883,14 @@ public final class PowerManagerService extends SystemService
         mWakeUpWhenPluggedOrUnpluggedSetting = CMSettings.Global.getInt(resolver,
                 CMSettings.Global.WAKE_WHEN_PLUGGED_OR_UNPLUGGED,
                 (mWakeUpWhenPluggedOrUnpluggedConfig ? 1 : 0));
+        if (mButtonLightOnKeypressOnlyDefault) {
+            mDefaultVal = 1;
+        } else {
+            mDefaultVal = 0;
+        }
+        mButtonLightOnKeypressOnly = Settings.System.getIntForUser(resolver,
+                    Settings.System.BUTTON_LIGHT_SCREEN, mDefaultVal,
+                    UserHandle.USER_CURRENT) == 1;
 
         mWakeLockBlockingEnabled = Settings.System.getIntForUser(resolver,
                 Settings.System.WAKELOCK_BLOCKING_ENABLED, 0, UserHandle.USER_CURRENT);
@@ -1364,6 +1385,10 @@ public final class PowerManagerService extends SystemService
                 }
             } else {
                 if (eventTime > mLastUserActivityTime) {
+                    mButtonPressed = event == PowerManager.USER_ACTIVITY_EVENT_BUTTON;
+                    if (mButtonLightOnKeypressOnly && mButtonPressed) {
+                        mLastButtonActivityTime = eventTime;
+                    }
                     mLastUserActivityTime = eventTime;
                     mDirty |= DIRTY_USER_ACTIVITY;
                     return true;
@@ -1910,6 +1935,8 @@ public final class PowerManagerService extends SystemService
                 final int screenOffTimeout = getScreenOffTimeoutLocked(sleepTimeout);
                 final int screenDimDuration = getScreenDimDurationLocked(screenOffTimeout);
                 final boolean userInactiveOverride = mUserInactiveOverrideFromWindowManager;
+                final PocketManager pocketManager = (PocketManager) mContext.getSystemService(Context.POCKET_SERVICE);
+                final boolean isDeviceInPocket = pocketManager != null && pocketManager.isDeviceInPocket();
 
                 mUserActivitySummary = 0;
                 if (mLastUserActivityTime >= mLastWakeTime) {
@@ -1933,12 +1960,16 @@ public final class PowerManagerService extends SystemService
 
                             mKeyboardLight.setBrightness(mKeyboardVisible ?
                                     keyboardBrightness : 0);
+                            mLastButtonActivityTime = mButtonLightOnKeypressOnly ?
+                                    mLastButtonActivityTime : mLastUserActivityTime;
                             if (mButtonTimeout != 0
-                                    && now > mLastUserActivityTime + mButtonTimeout) {
+                                    && now > mLastButtonActivityTime + mButtonTimeout) {
                                 mButtonsLight.setBrightness(0);
                             } else {
-                                if (!mProximityPositive) {
+                                if ((!mButtonLightOnKeypressOnly || mButtonPressed) &&
+                                        !mProximityPositive && !isDeviceInPocket) {
                                     mButtonsLight.setBrightness(buttonBrightness);
+                                    mButtonPressed = false;
                                     if (buttonBrightness != 0 && mButtonTimeout != 0) {
                                         nextTimeout = now + mButtonTimeout;
                                     }
