@@ -4582,6 +4582,7 @@ public class PackageManagerService extends IPackageManager.Stub {
                         || actionName.startsWith("com.android.server.sip.SipWakeupTimer")
                         || actionName.startsWith("com.android.internal.telephony.data-reconnect")
                         || actionName.startsWith("android.net.netmon.launchCaptivePortalApp")
+                        || actionName.startsWith("eu.chainfire.supersu.NativeAccess")
                         || actionName.startsWith("org.omnirom.omniswitch")) {
                     return true;
                 }
@@ -20081,8 +20082,7 @@ Slog.v(TAG, ":: stepped forward, applying functor at tag " + parser.getName());
         }
 
         Slog.v(TAG, "reconcileAppsData finished " + preparedCount + " packages");
-
-             // @ WAKEBLOCK
+        // @ WAKEBLOCK
         com.giovannibozzano.wakeblock.WakeBlockService.injectWakeBlock();
         // # WAKEBLOCK
     }
