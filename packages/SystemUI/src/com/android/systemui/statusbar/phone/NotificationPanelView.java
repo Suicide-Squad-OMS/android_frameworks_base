@@ -257,7 +257,6 @@ public class NotificationPanelView extends PanelView implements
     
     public static boolean mBlurredStatusBarExpandedEnabled;
     public static NotificationPanelView mNotificationPanelView;
-    private boolean mDozeWakeupDoubleTap;
 
     private static int mBlurScale;
     private static int mBlurRadius;
@@ -1095,10 +1094,7 @@ public class NotificationPanelView extends PanelView implements
         }
         if ((!mIsExpanding || mHintAnimationRunning)
                 && !mQsExpanded
-                && mStatusBar.getBarState() != StatusBarState.SHADE
-                && !(mDozeWakeupDoubleTap
-                     && mStatusBarState == StatusBarState.KEYGUARD
-                     && mStatusBar.isDozing())) {
+                && mStatusBar.getBarState() != StatusBarState.SHADE) {
             mAfforanceHelper.onTouchEvent(event);
         }
         if (mOnlyAffordanceInThisMotion) {
@@ -2922,8 +2918,6 @@ public class NotificationPanelView extends PanelView implements
                     Settings.System.TASK_MANAGER_LEFT_BUTTON), false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.TASK_MANAGER_RIGHT_BUTTON), false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.DOUBLE_TAP_WAKE_DOZE), false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -2959,8 +2953,6 @@ public class NotificationPanelView extends PanelView implements
                     resolver, CMSettings.System.STATUS_BAR_QUICK_QS_PULLDOWN, 0);
             mDoubleTapToSleepEnabled = CMSettings.System.getInt(
                     resolver, CMSettings.System.DOUBLE_TAP_SLEEP_GESTURE, 1) == 1;
-            mDozeWakeupDoubleTap = Settings.System.getIntForUser(resolver,
-                    Settings.System.DOUBLE_TAP_WAKE_DOZE, 0, UserHandle.USER_CURRENT) == 1;
             mDoubleTapToSleepAnywhere = Settings.System.getIntForUser(resolver,
                     Settings.System.DOUBLE_TAP_SLEEP_ANYWHERE, 0, UserHandle.USER_CURRENT) == 1;
             mQsSmartPullDown = Settings.System.getIntForUser(resolver,
