@@ -6115,6 +6115,12 @@ public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_rege
          */
         public static final String SENSOR_BLOCK = "sensor_block";
 
+       /**
+         * Require double tap instead of simple tap to wake from Doze pulse screen
+         * @hide
+         */
+        public static final String DOUBLE_TAP_WAKE_DOZE = "double_tap_wake_doze";
+
         /**
          * @hide
          */
