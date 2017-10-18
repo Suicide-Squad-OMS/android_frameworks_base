@@ -738,9 +738,9 @@ public class WindowManagerService extends IWindowManager.Stub
     PowerManager mPowerManager;
     PowerManagerInternal mPowerManagerInternal;
 
-    float mWindowAnimationScaleSetting = 1.0f;
-    float mTransitionAnimationScaleSetting = 1.0f;
-    float mAnimatorDurationScaleSetting = 1.0f;
+    float mWindowAnimationScaleSetting = 0.6f;
+    float mTransitionAnimationScaleSetting = 0.6f;
+    float mAnimatorDurationScaleSetting = 0.6f;
     boolean mAnimationsDisabled = false;
 
     final InputManagerService mInputManager;
@@ -6100,10 +6100,6 @@ public class WindowManagerService extends IWindowManager.Stub
                 return;
             }
 
-            // Don't enable the screen until all existing windows have been drawn.
-            if (!mForceDisplayEnabled && checkWaitingForWindowsLocked()) {
-                return;
-            }
 
             if (!mBootAnimationStopped) {
                 // Do this one time.
@@ -6124,7 +6120,13 @@ public class WindowManagerService extends IWindowManager.Stub
                 mBootAnimationStopped = true;
             }
 
-            if (!mForceDisplayEnabled && !checkBootAnimationCompleteLocked()) {
+
+	   // Don't enable the screen until all existing windows have been drawn.
+            if (!mForceDisplayEnabled && checkWaitingForWindowsLocked()) {
+                return;
+            }
+
+	   if (!mForceDisplayEnabled && !checkBootAnimationCompleteLocked()) {
                 if (DEBUG_BOOT) Slog.i(TAG_WM, "performEnableScreen: Waiting for anim complete");
                 return;
             }
