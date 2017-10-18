@@ -17,7 +17,12 @@
 package com.android.systemui.qs.tiles;
 
 import android.content.Intent;
+import android.os.Build;
+import android.os.SystemProperties;
 import android.provider.Settings;
+import android.provider.Settings.Secure;
+import android.text.TextUtils;
+
 
 import com.android.systemui.qs.QSTile;
 import com.android.systemui.R;
@@ -29,6 +34,15 @@ public class AmbientDisplayTile extends QSTile<QSTile.BooleanState> {
 
     public AmbientDisplayTile(Host host) {
         super(host);
+    }
+
+    @Override
+    public boolean isAvailable() {
+        String name = Build.IS_DEBUGGABLE ? SystemProperties.get("debug.doze.component") : null;
+        if (TextUtils.isEmpty(name)) {
+            name = mContext.getString(com.android.internal.R.string.config_dozeComponent);
+        }
+        return !TextUtils.isEmpty(name);
     }
 
     @Override
