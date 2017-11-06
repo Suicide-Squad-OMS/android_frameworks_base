@@ -798,12 +798,10 @@ public class NotificationManagerService extends SystemService {
                         }
                     }
                 }
-                if (!queryRestart) {
-                    mListeners.onPackagesChanged(removingPackage, pkgList);
-                    mRankerServices.onPackagesChanged(removingPackage, pkgList);
-                    mConditionProviders.onPackagesChanged(removingPackage, pkgList);
-                    mRankingHelper.onPackagesChanged(removingPackage, pkgList);
-                }
+                mListeners.onPackagesChanged(removingPackage, pkgList);
+                mRankerServices.onPackagesChanged(removingPackage, pkgList);
+                mConditionProviders.onPackagesChanged(removingPackage, pkgList);
+                mRankingHelper.onPackagesChanged(removingPackage, pkgList);
             }
         }
     };
