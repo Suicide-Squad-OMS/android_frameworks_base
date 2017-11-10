@@ -313,4 +313,10 @@
 
     <string name="accessibility_data_sim">Current Data Sim</string>
     <string name="data_switch_started">Switching data SIM, this may take up to a minute...</string>
+	
+    <!-- CPU info -->
+    <string name="cpuinfo_cpu_title">"cpu:"</string>
+    <string name="cpuinfo_freq">" MHz"</string>
+    <string name="cpuinfo_temp_title">"Temp: "</string>
+    <string name="cpuinfo_temp">" °C"</string>
 </resources>
