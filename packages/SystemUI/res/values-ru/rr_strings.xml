@@ -279,4 +279,10 @@
   <string name="quick_settings_pie">PIE</string>
   <string name="accessibility_data_sim">Текущая SIM-карта</string>
   <string name="data_switch_started">Смена SIM-карты, это может занять около минуты...</string>
+  
+  <!-- CPU info -->
+  <string name="cpuinfo_cpu_title">"цп:"</string>
+  <string name="cpuinfo_freq">" МГц"</string>
+  <string name="cpuinfo_temp_title">"Темп: "</string>
+  <string name="cpuinfo_temp">" °C"</string>
 </resources>
