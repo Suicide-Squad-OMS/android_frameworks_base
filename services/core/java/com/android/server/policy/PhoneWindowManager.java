@@ -4603,10 +4603,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 if (DEBUG_INPUT) {
                     Log.d(TAG, "Dispatching key event " + event + " to handler " + handler);
                 }
-                if (handler.handleKeyEvent(event)) {
+                event = handler.handleKeyEvent(event);
+                if (event == null) {
                     if (mIsDeviceInPocket) {
-                        return false;
-                    }
                     return true;
                 }
             } catch (Exception e) {
