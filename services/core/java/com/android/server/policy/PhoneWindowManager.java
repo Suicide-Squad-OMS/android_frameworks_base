@@ -4605,7 +4605,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 }
                 event = handler.handleKeyEvent(event);
                 if (event == null) {
-                    if (mIsDeviceInPocket) {
                     return true;
                 }
             } catch (Exception e) {
